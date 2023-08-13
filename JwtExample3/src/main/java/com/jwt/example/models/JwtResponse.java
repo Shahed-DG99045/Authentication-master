@@ -10,5 +10,5 @@ import lombok.*;
 @ToString
 public class JwtResponse {
     private String jwtToken;
-    private String password;
+    private String username;
 }

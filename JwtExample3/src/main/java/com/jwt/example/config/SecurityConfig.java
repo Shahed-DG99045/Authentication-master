@@ -2,6 +2,7 @@ package com.jwt.example.config;
 
 import com.jwt.example.security.JwtAuthenticationEntryPoint;
 
+import com.jwt.example.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
