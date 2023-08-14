@@ -1,11 +1,12 @@
-package com.jwt.example.config;
+package com.jwt.example.controllers;
 
+import com.jwt.example.entities.User;
 import com.jwt.example.models.JwtRequest;
 import com.jwt.example.models.JwtResponse;
 import com.jwt.example.security.JwtHelper;
+import com.jwt.example.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,17 +19,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationManager manager;
 
-    @Autowired
-    private AuthenticationManager manager;
+    private final JwtHelper helper;
 
+    private final UserService userService;
 
-    @Autowired
-    private JwtHelper helper;
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+    public AuthController(UserDetailsService userDetailsService, AuthenticationManager manager, JwtHelper helper, UserService userService) {
+        this.userDetailsService = userDetailsService;
+        this.manager = manager;
+        this.helper = helper;
+        this.userService = userService;
+    }
 
 
     @PostMapping("/login")
@@ -38,7 +44,7 @@ public class AuthController {
 
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String token = this.helper.generateToken(userDetails);
+        String token = helper.generateToken(userDetails);
 
         JwtResponse response = JwtResponse.builder()
                 .jwtToken(token)
@@ -63,4 +69,10 @@ public class AuthController {
     public String exceptionHandler() {
         return "Credentials Invalid !!";
     }
+
+    @PostMapping("/create-user")
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
 }

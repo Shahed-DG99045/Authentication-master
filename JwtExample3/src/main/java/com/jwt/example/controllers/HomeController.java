@@ -1,6 +1,6 @@
 package com.jwt.example.controllers;
 
-import com.jwt.example.models.User;
+import com.jwt.example.entities.User;
 import com.jwt.example.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,6 @@ import java.util.List;
 public class HomeController {
 
     private UserService userService;
-
     public HomeController(UserService userService) {
         this.userService = userService;
     }
